@@ -12,7 +12,6 @@ import { generateRpcUserDependent } from './generateRpcUserDependent'
 import { reindexBlockchain } from './reindexBlockchain'
 import { reindexChainstate } from './reindexChainstate'
 import { runtimeInfo } from './runtimeInfo'
-import { assumeutxo } from './assumeutxo'
 
 export const actions = sdk.Actions.of()
   .addAction(runtimeInfo)
@@ -27,5 +26,4 @@ export const actions = sdk.Actions.of()
   .addAction(deleteRpcAuth)
   .addAction(mempoolConfig)
   .addAction(peerConfig)
-  .addAction(generateRpcUserDependent)
-  .addAction(assumeutxo)
+  .addAction(generateRpcUserDependent)  

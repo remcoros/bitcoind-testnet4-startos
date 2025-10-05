@@ -27,7 +27,7 @@ export const deleteTxIndex = sdk.Action.withoutInput(
       mainMounts,
       'delete-txindex',
       async (subc) => {
-        await fs.rmdir(`${subc.rootfs}/${rootDir}/indexes/txindex`, {
+        await fs.rmdir(`${subc.rootfs}/${rootDir}/testnet4/indexes/txindex`, {
           recursive: true,
         })
       },

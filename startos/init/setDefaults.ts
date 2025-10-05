@@ -12,7 +12,7 @@ export const setDefaults = sdk.setupOnInit(async (effects, kind) => {
 
     // pruning
     const disk = await diskUsage()
-    if (disk.total < 900_000_000_000) {
+    if (disk.total < 15_000_000_000) {
       defaults = {
         prune: 550,
         rpcbind: prunedRpcbind,
