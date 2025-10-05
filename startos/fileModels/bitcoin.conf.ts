@@ -1,5 +1,5 @@
 import { FileHelper, matches } from '@start9labs/start-sdk'
-import { bitcoinConfDefaults } from '../utils'
+import { bitcoinConfDefaults, bitcoinConfDefaultsTN4 } from '../utils'
 
 const { anyOf, arrayOf, object } = matches
 
@@ -136,6 +136,11 @@ export const shape = object({
   peerblockfilters: boolean.onMismatch(peerblockfilters),
 }).onMismatch(bitcoinConfDefaults)
 
+const shapeTN4 = object({
+  chain: string.onMismatch(bitcoinConfDefaultsTN4.chain),
+  testnet4: object.onMismatch(bitcoinConfDefaultsTN4.testnet4),
+}).onMismatch(bitcoinConfDefaultsTN4)
+
 function onWrite(a: unknown): any {
   if (a && typeof a === 'object') {
     if (Array.isArray(a)) {
@@ -150,15 +155,26 @@ function onWrite(a: unknown): any {
   return a
 }
 
-export const bitcoinConfFile = FileHelper.ini(
+const bitcoinConfFileReal = FileHelper.ini(
   {
     volumeId: 'main',
     subpath: '/bitcoin.conf',
   },
-  shape,
+  shapeTN4,
   { bracketedArray: false },
   {
     onRead: (a) => a,
     onWrite,
   },
 )
+
+export const bitcoinConfFile = FileHelper.raw(
+  {
+    volumeId: 'main',
+    subpath: '/bitcoin.conf',
+  },
+  (obj: typeof shape._TYPE) => bitcoinConfFileReal.writeData({chain: 'testnet4', testnet4: obj}),
+  async (str) => (await bitcoinConfFileReal.read().once())?.testnet4,
+  (obj) => shape.withMismatch((_) => shape.unsafeCast({})).unsafeCast(obj),
+)
+

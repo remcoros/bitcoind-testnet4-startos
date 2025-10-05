@@ -70,7 +70,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
    * ======================== Daemons ========================
    */
 
-  const rpcCookieFile = `${rootDir}/${bitcoinConfDefaults.rpccookiefile}`
+  const rpcCookieFile = `${rootDir}/testnet4/${bitcoinConfDefaults.rpccookiefile}`
 
   await rm(`${bitcoindSub.rootfs}/${rpcCookieFile}`, { force: true })
 
@@ -118,7 +118,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
           const res = await bitcoindSub.exec([
             'bitcoin-cli',
             `-conf=${rootDir}/bitcoin.conf`,
-            `-rpccookiefile=${rootDir}/${bitcoinConfDefaults.rpccookiefile}`,
+            `-rpccookiefile=${rpcCookieFile}`,
             `-rpcconnect=${conf.rpcbind}`,
             'getblockchaininfo',
           ])
@@ -187,11 +187,11 @@ export const main = sdk.setupMain(async ({ effects }) => {
         bitcoind_port: 18332,
         bind_address: '0.0.0.0',
         bind_port: rpcPort,
-        cookie_file: `${rootDir}/${bitcoinConfDefaults.rpccookiefile}`,
+        cookie_file: rpcCookieFile,
         tor_proxy: `${osIp}:9050`,
         tor_only: conf.onlynet ? conf.onlynet.includes('onion') : false,
         passthrough_rpcauth: `${rootDir}/bitcoin.conf`,
-        passthrough_rpccookie: `${rootDir}/${bitcoinConfDefaults.rpccookiefile}`,
+        passthrough_rpccookie: rpcCookieFile,
       }),
     )
 

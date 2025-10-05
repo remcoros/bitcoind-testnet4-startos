@@ -4,11 +4,11 @@ export const peerInterfaceId = 'peer'
 export const zmqInterfaceId = 'zmq'
 export const zmqPort = 28332
 export const peerPort = 18333
-export const rpcPort = 8332
+export const rpcPort = 48332
 
 export const rootDir = '/root/.bitcoin'
 
-export const unprunedRpcbind = '0.0.0.0:8332'
+export const unprunedRpcbind = '0.0.0.0:48332'
 export const unprunedRpcallowIp = '0.0.0.0/0'
 
 export const prunedRpcbind = '127.0.0.1:18332'
@@ -112,6 +112,11 @@ export const bitcoinConfDefaults = {
   peerbloomfilters: false,
   blockfilterindex: 'basic',
   peerblockfilters: false,
+} as const
+
+export const bitcoinConfDefaultsTN4 = {
+  chain: 'testnet4',
+  testnet4: bitcoinConfDefaults
 } as const
 
 export function getExteralAddresses() {

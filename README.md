@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="icon.svg" alt="Bitcoin Core Logo" width="21%">
+  <img src="icon.png" alt="Bitcoin Core Logo" width="21%">
 </p>
 
 # Bitcoin Core for StartOS

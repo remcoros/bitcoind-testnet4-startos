@@ -22,7 +22,7 @@ const {
 
 const { InputSpec, Value } = sdk
 const diskUsage = utils.once(() => diskusage.check('/'))
-const archivalMin = 900_000_000_000
+const archivalMin = 15_000_000_000
 
 const configSpec = sdk.InputSpec.of({
   zmqEnabled: Value.toggle({
@@ -226,7 +226,7 @@ async function read(effects: any): Promise<PartialConfigSpec> {
 async function write(effects: T.Effects, input: ConfigSpec) {
   const otherConfig = {
     // RPC
-    rpcbind: input.prune ? '127.0.0.1:18332' : '0.0.0.0:8332',
+    rpcbind: input.prune ? '127.0.0.1:18332' : '0.0.0.0:48332',
     rpcallowip: input.prune ? '127.0.0.1/32' : '0.0.0.0/0',
 
     // Wallet
