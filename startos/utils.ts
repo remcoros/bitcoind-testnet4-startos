@@ -4,14 +4,14 @@ export const rpcInterfaceId = 'rpc'
 export const peerInterfaceId = 'peer'
 export const zmqInterfaceId = 'zmq'
 
-export const zmqPortBlock = 28332
-export const zmqPortTransaction = 28333
+export const zmqPortBlock = 38332
+export const zmqPortTransaction = 38333
 
-export const peerPortExternal = 8333
+export const peerPortExternal = 48333
 export const peerPortInternal = 58333
 
-export const rpcPort = 8332
-export const rpcPortPruned = 58332
+export const rpcPort = 48332
+export const rpcPortPruned = 58432
 
 export const rpcbind = `0.0.0.0:${rpcPort}`
 export const rpcbindPruned = `127.0.0.1:${rpcPortPruned}`
@@ -20,7 +20,9 @@ export const rpcallowip = '0.0.0.0/0'
 export const rpcallowipPruned = '127.0.0.1/32'
 
 export const rootDir = '/root/.bitcoin'
-export const rpccookiefile = '.cookie'
+export const rpccookiefile = 'testnet4/.cookie'
+/** Value written inside the [testnet4] section of bitcoin.conf */
+export const rpccookiefileSection = '.cookie'
 
 export const i2pSamPort = 7656
 export const i2pUiPort = 7070
@@ -87,7 +89,7 @@ export const ipcSocketPath = `unix:${rootDir}/ipc/bitcoin-core.sock`
 export function rpcArgs(opts: { prune: boolean }): string[] {
   return [
     `-conf=${rootDir}/bitcoin.conf`,
-    `-rpccookiefile=${rootDir}/.cookie`,
+    `-rpccookiefile=${rootDir}/${rpccookiefile}`,
     `-rpcport=${opts.prune ? rpcPortPruned : rpcPort}`,
   ]
 }

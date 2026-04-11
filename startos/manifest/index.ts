@@ -8,15 +8,15 @@ import {
 } from './i18n'
 
 export const manifest = setupManifest({
-  id: 'bitcoind',
-  title: 'Bitcoin Core',
+  id: 'bitcoind-testnet',
+  title: 'Bitcoin Core (testnet4)',
   license: 'MIT',
   donationUrl: null,
   packageRepo:
-    'https://github.com/Start9Labs/bitcoin-core-startos/tree/30.x',
+    'https://github.com/remcoros/bitcoind-testnet4-startos/tree/30.x-testnet4',
   upstreamRepo: 'https://github.com/bitcoin/bitcoin',
   marketingUrl: 'https://bitcoincore.org/',
-  docsUrls: ['https://docs.start9.com/bitcoin-guides/'],
+  docsUrls: ['https://github.com/remcoros/bitcoind-testnet4-startos'],
   description: { short, long },
   volumes: ['main', 'i2pd'],
   images: {

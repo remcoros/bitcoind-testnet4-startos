@@ -251,7 +251,6 @@ export const main = sdk.setupMain(async ({ effects }) => {
           if (!store.fullySynced) {
             await storeJson.merge(effects, {
               fullySynced: true,
-              snapshotInUse: false,
             })
             // Reduce dbcache and dbbatchsize after initial sync to free RAM
             await bitcoinConfFile.merge(effects, { dbcache: undefined, dbbatchsize: undefined })

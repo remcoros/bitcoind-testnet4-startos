@@ -1,9 +1,7 @@
 name: Tag and Release
 
 on:
-  push:
-    branches: ['30.x']
-    paths-ignore: ['*.md']
+  workflow_dispatch: # disabled: manual trigger only
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

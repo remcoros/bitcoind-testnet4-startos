@@ -1,17 +1,17 @@
 export const short = {
-  en_US: 'A Bitcoin Full Node by Bitcoin Core',
-  es_ES: 'Un nodo completo de Bitcoin por Bitcoin Core',
-  de_DE: 'Ein Bitcoin Full Node von Bitcoin Core',
-  pl_PL: 'Pełny węzeł Bitcoina od Bitcoin Core',
-  fr_FR: 'Un nœud complet de Bitcoin par Bitcoin Core',
+  en_US: 'A Bitcoin testnet4 Full Node by Bitcoin Core',
+  es_ES: 'Un nodo completo de testnet4 de Bitcoin por Bitcoin Core',
+  de_DE: 'Ein Bitcoin testnet4 Full Node von Bitcoin Core',
+  pl_PL: 'Pełny węzeł testnet4 Bitcoina od Bitcoin Core',
+  fr_FR: 'Un nœud complet testnet4 de Bitcoin par Bitcoin Core',
 }
 
 export const long = {
-  en_US: 'Bitcoin is an innovative payment network and a new kind of money. Bitcoin uses peer-to-peer technology to operate with no central authority or banks; managing transactions and the issuing of bitcoins is carried out collectively by the network. Bitcoin is open-source; its design is public, nobody owns or controls Bitcoin and everyone can take part. Through many of its unique properties, Bitcoin allows exciting uses that could not be covered by any previous payment system.',
-  es_ES: 'Bitcoin es una red de pagos innovadora y un nuevo tipo de dinero. Bitcoin utiliza tecnología peer-to-peer para operar sin autoridad central ni bancos; la gestión de transacciones y la emisión de bitcoins se lleva a cabo colectivamente por la red. Bitcoin es de código abierto; su diseño es público, nadie posee ni controla Bitcoin y todos pueden participar. A través de sus muchas propiedades únicas, Bitcoin permite usos emocionantes que no podrían ser cubiertos por ningún sistema de pago anterior.',
-  de_DE: 'Bitcoin ist ein innovatives Zahlungsnetzwerk und eine neue Art von Geld. Bitcoin verwendet Peer-to-Peer-Technologie, um ohne zentrale Autorität oder Banken zu funktionieren; die Verwaltung von Transaktionen und die Ausgabe von Bitcoins wird kollektiv vom Netzwerk durchgeführt. Bitcoin ist Open-Source; sein Design ist öffentlich, niemand besitzt oder kontrolliert Bitcoin und jeder kann teilnehmen. Durch seine vielen einzigartigen Eigenschaften ermöglicht Bitcoin aufregende Anwendungen, die von keinem früheren Zahlungssystem abgedeckt werden konnten.',
-  pl_PL: 'Bitcoin to innowacyjna sieć płatności i nowy rodzaj pieniądza. Bitcoin wykorzystuje technologię peer-to-peer do działania bez centralnej władzy czy banków; zarządzanie transakcjami i emisja bitcoinów jest realizowana kolektywnie przez sieć. Bitcoin jest open-source; jego projekt jest publiczny, nikt nie posiada ani nie kontroluje Bitcoina i każdy może wziąć udział. Dzięki wielu unikalnym właściwościom Bitcoin umożliwia ekscytujące zastosowania, których nie mógł objąć żaden poprzedni system płatności.',
-  fr_FR: "Bitcoin est un réseau de paiement innovant et un nouveau type d'argent. Bitcoin utilise la technologie peer-to-peer pour fonctionner sans autorité centrale ni banques. La gestion des transactions et l'émission de bitcoins sont effectuées collectivement par le réseau. Bitcoin est open-source ; sa conception est publique, personne ne possède ni ne contrôle Bitcoin et tout le monde peut y participer. Grâce à ses nombreuses propriétés uniques, Bitcoin permet des utilisations passionnantes qui ne pourraient être couvertes par aucun système de paiement précédent.",
+  en_US: 'Bitcoin Core running on testnet4 — the latest Bitcoin test network. Testnet4 is a public blockchain for developers and enthusiasts to test software without risking real funds. This package runs a full Bitcoin Core node on testnet4, providing RPC access and peer connectivity for development and testing purposes.',
+  es_ES: 'Bitcoin Core ejecutándose en testnet4, la red de pruebas más reciente de Bitcoin. Testnet4 es una blockchain pública para desarrolladores y entusiastas para probar software sin arriesgar fondos reales. Este paquete ejecuta un nodo completo de Bitcoin Core en testnet4, proporcionando acceso RPC y conectividad entre pares para propósitos de desarrollo y pruebas.',
+  de_DE: 'Bitcoin Core läuft auf testnet4 — dem neuesten Bitcoin-Testnetzwerk. Testnet4 ist eine öffentliche Blockchain für Entwickler und Enthusiasten zum Testen von Software ohne echte Gelder zu riskieren. Dieses Paket betreibt einen vollständigen Bitcoin Core-Knoten auf testnet4 und bietet RPC-Zugang und Peer-Konnektivität für Entwicklungs- und Testzwecke.',
+  pl_PL: 'Bitcoin Core działający na testnet4 — najnowszej sieci testowej Bitcoina. Testnet4 to publiczny łańcuch bloków dla programistów i entuzjastów do testowania oprogramowania bez ryzyka utraty prawdziwych środków. Ten pakiet uruchamia pełny węzeł Bitcoin Core na testnet4, zapewniając dostęp RPC i łączność z peerami do celów deweloperskich i testowych.',
+  fr_FR: "Bitcoin Core fonctionnant sur testnet4 — le dernier réseau de test Bitcoin. Testnet4 est une blockchain publique permettant aux développeurs et aux passionnés de tester des logiciels sans risquer de vrais fonds. Ce paquet fait tourner un nœud complet Bitcoin Core sur testnet4, offrant l'accès RPC et la connectivité entre pairs à des fins de développement et de test.",
 }
 
 export const alertUninstall = {

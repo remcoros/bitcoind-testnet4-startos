@@ -1,5 +1,4 @@
 import { sdk } from '../sdk'
-import { assumeutxo } from './assumeutxo'
 import { autoconfig } from './config/autoconfig'
 import { mempoolConfig } from './config/mempool'
 import { otherConfig } from './config/other'
@@ -19,7 +18,6 @@ export const actions = sdk.Actions.of()
   .addAction(mempoolConfig)
   .addAction(peerConfig)
   .addAction(rpcConfig)
-  .addAction(assumeutxo)
   .addAction(deleteCoinstatsIndex)
   .addAction(deletePeers)
   .addAction(deleteRpcAuth)

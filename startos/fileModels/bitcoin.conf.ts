@@ -10,7 +10,7 @@ import {
   rpcallowipPruned,
   rpcbind,
   rpcbindPruned,
-  rpccookiefile,
+  rpccookiefileSection,
   zmqBundle,
 } from '../utils'
 
@@ -57,7 +57,7 @@ export const shape = z.object({
   rpcallowip: z.enum([rpcallowip, rpcallowipPruned]).catch(rpcallowip),
   rpcuser: z.undefined().optional().catch(undefined),
   rpcpassword: z.undefined().optional().catch(undefined),
-  rpccookiefile: z.literal(rpccookiefile).catch(rpccookiefile),
+  rpccookiefile: z.literal(rpccookiefileSection).catch(rpccookiefileSection),
   // Peers enforced
   listen: z.literal(true).catch(true),
   bind: z
@@ -625,7 +625,7 @@ function formToFile(
   return {
     ...raw,
 
-    rpccookiefile: '.cookie',
+    rpccookiefile: rpccookiefileSection,
     listen: true,
     bind: `0.0.0.0:${peerPortInternal}`,
     whitebind: `0.0.0.0:${peerPortExternal}`,
@@ -701,11 +701,18 @@ export const bitcoinConfFile = FileHelper.ini(
   { bracketedArray: false },
   {
     onRead: (a) => {
-      const base = shape.parse(a)
+      // bitcoin.conf for testnet4 stores settings under a [testnet4] section;
+      // fall back to flat (top-level) so an empty/missing file still parses.
+      const section = (a as any)?.testnet4 ?? a
+      const base = shape.parse(section)
       return fileToForm(base)
     },
     onWrite: (a) => {
-      return stringifyPrimitives(formToFile(a))
+      // Wrap settings under [testnet4] section with chain=testnet4 at top level.
+      return {
+        chain: 'testnet4',
+        testnet4: stringifyPrimitives(formToFile(a)),
+      }
     },
   },
 )

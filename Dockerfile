@@ -85,4 +85,4 @@ ENV PATH=${BITCOIN_PREFIX}/bin:$PATH
 
 COPY --from=builder /opt /opt
 
-EXPOSE 8332 8333
+EXPOSE 48332 48333

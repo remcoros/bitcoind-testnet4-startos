@@ -21,6 +21,7 @@ export default {
     104: 'Interfaz ZeroMQ',
     105: 'Consola del daemon I2P',
     106: 'Interfaz para acceder a la consola del daemon I2P integrado',
+    107: 'Transmite notificaciones en tiempo real de bloques y transacciones de Bitcoin (hashes y datos sin procesar)',
 
     // actions/generateRpcUser.ts
     200: 'Nombre de usuario',
@@ -312,6 +313,7 @@ export default {
     104: 'ZeroMQ-Schnittstelle',
     105: 'I2P-Daemon-Konsole',
     106: 'Schnittstelle zum Zugriff auf die eingebettete I2P-Daemon-Konsole',
+    107: 'Überträgt Bitcoin-Block- und Transaktionsbenachrichtigungen in Echtzeit (Hashes und Rohdaten)',
 
     // actions/generateRpcUser.ts
     200: 'Benutzername',
@@ -603,6 +605,7 @@ export default {
     104: 'Interfejs ZeroMQ',
     105: 'Konsola daemona I2P',
     106: 'Interfejs dostępu do konsoli wbudowanego daemona I2P',
+    107: 'Przesyła w czasie rzeczywistym powiadomienia o blokach i transakcjach Bitcoin (skróty i dane surowe)',
 
     // actions/generateRpcUser.ts
     200: 'Nazwa użytkownika',
@@ -894,6 +897,7 @@ export default {
     104: 'Interface ZeroMQ',
     105: 'Console du démon I2P',
     106: 'Interface pour accéder à la console du démon I2P intégré',
+    107: 'Diffuse en temps réel les notifications de blocs et de transactions Bitcoin (hachages et données brutes)',
 
     // actions/generateRpcUser.ts
     200: "Nom d'utilisateur",
