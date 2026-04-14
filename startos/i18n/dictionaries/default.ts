@@ -16,7 +16,7 @@ const dict = {
   'RPC Interface': 100,
   'Listens for JSON-RPC commands': 101,
   'Peer Interface': 102,
-  'Listens for incoming connections from peers on the bitcoin network': 103,
+  'Streams real-time Bitcoin block and transaction notifications (hashes and raw data)': 103,
   'ZeroMQ Interface': 104,
   'I2P Daemon Console': 105,
   'Interface to access the embedded I2P daemon console': 106,
