@@ -160,7 +160,7 @@ function stringifyPrimitives(a: unknown): any {
 const { InputSpec, Value, Variants, List } = sdk
 
 export const diskUsage = utils.once(() => diskusage.check('/'))
-export const archivalMin = 900_000_000_000
+export const archivalMin = 20_000_000_000
 
 export const fullConfigSpec = sdk.InputSpec.of({
   raw: Value.hidden(shape),
