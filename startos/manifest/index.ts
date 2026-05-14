@@ -16,7 +16,6 @@ export const manifest = setupManifest({
     'https://github.com/remcoros/bitcoind-testnet4-startos/tree/30.x-testnet4',
   upstreamRepo: 'https://github.com/bitcoin/bitcoin',
   marketingUrl: 'https://bitcoincore.org/',
-  docsUrls: ['https://github.com/remcoros/bitcoind-testnet4-startos'],
   description: { short, long },
   volumes: ['main', 'i2pd'],
   images: {
