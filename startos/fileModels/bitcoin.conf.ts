@@ -1,5 +1,6 @@
 import { FileHelper, T, utils, z } from '@start9labs/start-sdk'
 import * as diskusage from 'diskusage'
+import { totalmem } from 'os'
 import { i18n } from '../i18n'
 import { sdk } from '../sdk'
 import {
@@ -123,9 +124,8 @@ export const shape = z.object({
       z.string().transform(Number),
       z.number(),
     ])
-    .transform((v) => (v === 0 ? undefined : v < minPrune ? minPrune : v))
-    .optional()
-    .catch(undefined),
+    .transform((v) => (v > 0 && v < minPrune ? minPrune : v))
+    .catch(0),
   coinstatsindex: iniBoolean,
   txindex: iniBoolean,
   peerbloomfilters: iniBoolean,
@@ -162,12 +162,19 @@ const { InputSpec, Value, Variants, List } = sdk
 export const diskUsage = utils.once(() => diskusage.check('/'))
 export const archivalMin = 20_000_000_000
 
+export const defaultDbcache = () =>
+  Math.min(Math.floor((totalmem() * 0.25) / (1024 * 1024)), 5_120)
+
+export const defaultDbbatchsize = () =>
+  Math.min(Math.max(Math.floor(totalmem() / 256), 16_777_216), 33_554_432)
+
 export const fullConfigSpec = sdk.InputSpec.of({
   raw: Value.hidden(shape),
-  persistmempool: Value.toggle({
+  persistmempool: Value.triState({
     name: i18n('Persist Mempool'),
     description: i18n('Save the mempool on shutdown and load on restart.'),
-    default: true,
+    default: null,
+    footnote: `${i18n('Default')}: true`,
   }),
   maxmempool: Value.number({
     name: i18n('Max Mempool Size'),
@@ -177,7 +184,7 @@ export const fullConfigSpec = sdk.InputSpec.of({
     min: 1,
     integer: true,
     units: 'MiB',
-    placeholder: '300',
+    footnote: `${i18n('Default')}: 300 MiB`,
   }),
   mempoolexpiry: Value.number({
     name: i18n('Mempool Expiration'),
@@ -189,17 +196,19 @@ export const fullConfigSpec = sdk.InputSpec.of({
     min: 1,
     integer: true,
     units: i18n('Hr'),
-    placeholder: '336',
+    footnote: `${i18n('Default')}: 336 Hr`,
   }),
-  permitbaremultisig: Value.toggle({
+  permitbaremultisig: Value.triState({
     name: i18n('Permit Bare Multisig'),
     description: i18n('Relay non-P2SH multisig transactions'),
-    default: true,
+    default: null,
+    footnote: `${i18n('Default')}: true`,
   }),
-  datacarrier: Value.toggle({
+  datacarrier: Value.triState({
     name: i18n('Relay OP_RETURN Transactions'),
     description: i18n('Relay transactions with OP_RETURN outputs'),
-    default: true,
+    default: null,
+    footnote: `${i18n('Default')}: true`,
   }),
   datacarriersize: Value.number({
     name: i18n('Max OP_RETURN Size'),
@@ -210,16 +219,17 @@ export const fullConfigSpec = sdk.InputSpec.of({
     max: 100_000,
     integer: true,
     units: i18n('bytes'),
-    placeholder: '100000',
+    footnote: `${i18n('Default')}: 100000 bytes`,
   }),
-  zmqEnabled: Value.toggle({
+  zmqEnabled: Value.triState({
     name: i18n('ZeroMQ Enabled'),
     description: i18n(
       'The ZeroMQ interface is useful for some applications which might require data related to block and transaction events from Bitcoin Core. For example, LND requires ZeroMQ be enabled for LND to get the latest block data',
     ),
     default: true,
+    footnote: `${i18n('Default')}: false`,
   }),
-  txindex: Value.dynamicToggle(async ({ effects }) => {
+  txindex: Value.dynamicTriState(async ({ effects }) => {
     const disk = await diskUsage()
     return {
       name: i18n('Transaction Index'),
@@ -634,11 +644,11 @@ function formToFile(
     externalip: raw?.externalip?.filter((a) => !!a) as string[] | undefined,
 
     // Mempool
-    persistmempool,
+    persistmempool: persistmempool ?? undefined,
     maxmempool: maxmempool ?? undefined,
     mempoolexpiry: mempoolexpiry ?? undefined,
-    permitbaremultisig,
-    datacarrier,
+    permitbaremultisig: permitbaremultisig ?? undefined,
+    datacarrier: datacarrier ?? undefined,
     datacarriersize: datacarriersize ?? undefined,
 
     // RPC
@@ -651,13 +661,13 @@ function formToFile(
     discardfee: wallet?.discardfee ?? undefined,
 
     // Other
-    txindex: prune ? false : txindex,
+    txindex: prune ? false : txindex ?? undefined,
     coinstatsindex,
     peerbloomfilters,
     peerblockfilters: blockfilters?.peerblockfilters,
     blockfilterindex: blockfilters?.blockfilterindex ? 'basic' : false,
     blocknotify: blocknotify || undefined,
-    prune: prune ?? undefined,
+    prune: prune ?? 0,
     dbcache: dbcache ?? undefined,
     dbbatchsize: dbbatchsize ?? undefined,
     // ZMQ

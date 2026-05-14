@@ -286,6 +286,7 @@ const dict = {
   'Excluded by onlynet': 1956,
   'Tor is not running': 1958,
   'Tor is not installed': 1959,
+  Default: 2000,
 
   // Common
   Configuration: 1800,

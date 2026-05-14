@@ -1,6 +1,6 @@
 import { VersionInfo } from '@start9labs/start-sdk'
 
-export const v_30_2_6 = VersionInfo.of({
+export const v_30_2_7 = VersionInfo.of({
   version: '30.2:7',
   releaseNotes: {
     en_US: 'Initial release of Bitcoin Core (testnet4) for StartOS 0.4',

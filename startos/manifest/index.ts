@@ -13,7 +13,7 @@ export const manifest = setupManifest({
   license: 'MIT',
   donationUrl: null,
   packageRepo:
-    'https://github.com/remcoros/bitcoind-testnet4-startos/tree/30.x-testnet4',
+    'https://github.com/remcoros/bitcoind-testnet4-startos/',
   upstreamRepo: 'https://github.com/bitcoin/bitcoin',
   marketingUrl: 'https://bitcoincore.org/',
   description: { short, long },
@@ -21,7 +21,11 @@ export const manifest = setupManifest({
   images: {
     bitcoind: {
       source: {
-        dockerBuild: {},
+        dockerBuild: {
+          buildArgs: {
+            VERSION: '31.0',
+          },
+        },
       },
       arch: ['x86_64', 'aarch64', 'riscv64'],
     },

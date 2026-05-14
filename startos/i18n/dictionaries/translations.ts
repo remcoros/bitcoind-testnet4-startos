@@ -292,6 +292,7 @@ export default {
 
     // Common
     1800: 'Configuración',
+    2000: 'Predeterminado',
   } satisfies LangDict,
   de_DE: {
     // main.ts
@@ -584,6 +585,7 @@ export default {
 
     // Common
     1800: 'Konfiguration',
+    2000: 'Standard',
   } satisfies LangDict,
   pl_PL: {
     // main.ts
@@ -876,6 +878,7 @@ export default {
 
     // Common
     1800: 'Konfiguracja',
+    2000: 'Domyślnie',
   } satisfies LangDict,
   fr_FR: {
     // main.ts
@@ -1168,5 +1171,6 @@ export default {
 
     // Common
     1800: 'Configuration',
+    2000: 'Par défaut',
   } satisfies LangDict,
 }

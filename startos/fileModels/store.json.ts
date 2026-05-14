@@ -6,7 +6,6 @@ export const shape = z
     reindexBlockchain: z.boolean().catch(false),
     reindexChainstate: z.boolean().catch(false),
     fullySynced: z.boolean().catch(false),
-    enableIpc: z.boolean().catch(false),
   })
   .strip()
 
