@@ -1,18 +1,18 @@
 import { VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '31.0:2',
+  version: '31.1:0',
   releaseNotes: {
     en_US:
-      'Adds StartOS 0.4.0-beta.10 and Start SDK 2 compatibility, dynamic Tor bridge routing, and stable RPC/ZMQ provider bindings.',
+      'Updated Bitcoin Core to 31.1. Fixes a privacy issue where PrivateBroadcast could connect over clearnet instead of the configured privacy network, plus validation, wallet, networking, and performance issues. [Full release notes](https://bitcoincore.org/en/releases/31.1/).',
     es_ES:
-      'Añade compatibilidad con StartOS 0.4.0-beta.10 y Start SDK 2, enrutamiento Tor dinámico y enlaces RPC/ZMQ estables.',
+      'Bitcoin Core se actualizó a la versión 31.1. Corrige un problema de privacidad por el que PrivateBroadcast podía conectarse por clearnet en lugar de la red de privacidad configurada, además de problemas de validación, cartera, red y rendimiento. [Notas completas de la versión](https://bitcoincore.org/en/releases/31.1/).',
     de_DE:
-      'Fügt Kompatibilität mit StartOS 0.4.0-beta.10 und Start SDK 2, dynamisches Tor-Routing und stabile RPC/ZMQ-Bindungen hinzu.',
+      'Bitcoin Core wurde auf Version 31.1 aktualisiert. Behebt ein Datenschutzproblem, durch das PrivateBroadcast Verbindungen über das Clearnet statt über das konfigurierte Datenschutznetzwerk herstellen konnte, sowie Probleme bei Validierung, Wallet, Netzwerk und Leistung. [Vollständige Versionshinweise](https://bitcoincore.org/en/releases/31.1/).',
     pl_PL:
-      'Dodaje zgodność ze StartOS 0.4.0-beta.10 i Start SDK 2, dynamiczny routing Tor oraz stabilne powiązania RPC/ZMQ.',
+      'Zaktualizowano Bitcoin Core do wersji 31.1. Naprawiono problem z prywatnością, przez który PrivateBroadcast mógł łączyć się przez clearnet zamiast skonfigurowanej sieci prywatności, a także problemy z walidacją, portfelem, siecią i wydajnością. [Pełne informacje o wydaniu](https://bitcoincore.org/en/releases/31.1/).',
     fr_FR:
-      'Ajoute la compatibilité avec StartOS 0.4.0-beta.10 et Start SDK 2, le routage Tor dynamique et des liaisons RPC/ZMQ stables.',
+      'Bitcoin Core a été mis à jour vers la version 31.1. Corrige un problème de confidentialité où PrivateBroadcast pouvait se connecter via le clearnet au lieu du réseau de confidentialité configuré, ainsi que des problèmes de validation, de portefeuille, de réseau et de performances. [Notes de version complètes](https://bitcoincore.org/en/releases/31.1/).',
   },
   migrations: {
     up: async () => {},
