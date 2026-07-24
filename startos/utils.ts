@@ -1,8 +1,62 @@
+import { T } from '@start9labs/start-sdk'
 import { sdk } from './sdk'
+
+/**
+ * Resolve a dependency binding through the StartOS bridge. Mapping to the
+ * minimal address keeps callers reactive only to install, removal, or port
+ * assignment changes.
+ */
+export function bridgeAddress(
+  effects: T.Effects,
+  opts: {
+    packageId: string
+    hostId: string
+    internalPort: number
+    fallbackPort: number
+  },
+): { const(): Promise<string>; once(): Promise<string> }
+export function bridgeAddress(
+  effects: T.Effects,
+  opts: { packageId: string; hostId: string; internalPort: number },
+): { const(): Promise<string | null>; once(): Promise<string | null> }
+export function bridgeAddress(
+  effects: T.Effects,
+  opts: {
+    packageId: string
+    hostId: string
+    internalPort: number
+    fallbackPort?: number
+  },
+) {
+  const watchable = async () => {
+    const osIp = await sdk.getOsIp(effects)
+    return sdk.host.get(
+      effects,
+      { packageId: opts.packageId, hostId: opts.hostId },
+      (host) => {
+        const port =
+          host?.bindings[opts.internalPort]?.net.assignedPort ??
+          opts.fallbackPort
+        return port == null ? null : `${osIp}:${port}`
+      },
+    )
+  }
+  return {
+    const: async () => (await watchable()).const(),
+    once: async () => (await watchable()).once(),
+  }
+}
+
+// Stable provider contract for beta.10 consumers.
+export const rpcHostId = 'rpc'
+export const peerHostId = 'peer'
+export const zmqHostId = 'zmq'
+export const i2pConsoleHostId = 'i2p-console'
 
 export const rpcInterfaceId = 'rpc'
 export const peerInterfaceId = 'peer'
-export const zmqInterfaceId = 'zmq'
+export const zmqBlockInterfaceId = 'zmq-block'
+export const zmqTxInterfaceId = 'zmq-tx'
 
 export const zmqPortBlock = 38332
 export const zmqPortTransaction = 38333

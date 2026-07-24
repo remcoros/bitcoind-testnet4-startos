@@ -274,7 +274,6 @@ export default {
     1740: 'Editar más valores en bitcoin.conf',
     1741: 'Archivo completo',
 
-
     // actions/config/autoconfig.ts
     1900: 'Auto-Configurar',
     1901: 'Configurar automáticamente bitcoin.conf para las necesidades de otro servicio',
@@ -566,7 +565,6 @@ export default {
     1739: 'Weitere Einstellungen',
     1740: 'Weitere Werte in bitcoin.conf bearbeiten',
     1741: 'Vollständiges Archiv',
-
 
     // actions/config/autoconfig.ts
     1900: 'Auto-Konfiguration',
@@ -860,7 +858,6 @@ export default {
     1740: 'Edytuj więcej wartości w bitcoin.conf',
     1741: 'Pełne archiwum',
 
-
     // actions/config/autoconfig.ts
     1900: 'Auto-Konfiguracja',
     1901: 'Automatycznie skonfiguruj bitcoin.conf dla potrzeb innej usługi',
@@ -1152,7 +1149,6 @@ export default {
     1739: 'Autres paramètres',
     1740: 'Modifier plus de valeurs dans bitcoin.conf',
     1741: 'Archive complète',
-
 
     // actions/config/autoconfig.ts
     1900: 'Auto-Configuration',

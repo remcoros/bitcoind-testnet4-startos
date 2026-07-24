@@ -1,19 +1,12 @@
 import { setupManifest } from '@start9labs/start-sdk'
-import {
-  alertRestore,
-  alertUninstall,
-  long,
-  short,
-  torDescription,
-} from './i18n'
+import { long, short, torDescription } from './i18n'
 
 export const manifest = setupManifest({
   id: 'bitcoind-testnet',
   title: 'Bitcoin Core (testnet4)',
   license: 'MIT',
   donationUrl: null,
-  packageRepo:
-    'https://github.com/remcoros/bitcoind-testnet4-startos/',
+  packageRepo: 'https://github.com/remcoros/bitcoind-testnet4-startos/',
   upstreamRepo: 'https://github.com/bitcoin/bitcoin',
   marketingUrl: 'https://bitcoincore.org/',
   description: { short, long },
@@ -48,10 +41,6 @@ export const manifest = setupManifest({
       arch: ['x86_64', 'aarch64'],
       emulateMissingAs: 'x86_64',
     },
-  },
-  alerts: {
-    uninstall: alertUninstall,
-    restore: alertRestore,
   },
   dependencies: {
     tor: {

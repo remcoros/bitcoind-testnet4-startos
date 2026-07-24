@@ -661,7 +661,7 @@ function formToFile(
     discardfee: wallet?.discardfee ?? undefined,
 
     // Other
-    txindex: prune ? false : txindex ?? undefined,
+    txindex: prune ? false : (txindex ?? undefined),
     coinstatsindex,
     peerbloomfilters,
     peerblockfilters: blockfilters?.peerblockfilters,

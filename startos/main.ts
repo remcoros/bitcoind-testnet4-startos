@@ -1,6 +1,7 @@
 import { TOML } from '@start9labs/start-sdk'
 import { access, rm, writeFile } from 'fs/promises'
 import { request } from 'node:https'
+import { socksHostId, socksPort } from 'tor-startos/startos/utils'
 import { bitcoinConfFile } from './fileModels/bitcoin.conf'
 import { i2pdConfFile } from './fileModels/i2pd.conf'
 import { storeJson } from './fileModels/store.json'
@@ -9,6 +10,7 @@ import { sdk } from './sdk'
 import {
   bitcoinCliArgs,
   bitcoinMounts,
+  bridgeAddress,
   GetBlockchainInfo,
   i2pControlPort,
   rootDir,
@@ -71,19 +73,24 @@ export const main = sdk.setupMain(async ({ effects }) => {
 
   const { reindexBlockchain, reindexChainstate } = store
 
-  // get Tor container IP (restarts Bitcoin if IP changes, needed for -onion= flag)
-  const torIp = await sdk.getContainerIp(effects, { packageId: 'tor' }).const()
+  const torSocks = await bridgeAddress(effects, {
+    packageId: 'tor',
+    hostId: socksHostId,
+    internalPort: socksPort,
+    fallbackPort: socksPort,
+  }).const()
 
-  // track Tor running status dynamically for health check (no restart needed)
+  // Track Tor independently of the bridge address so lifecycle changes do not
+  // churn bitcoind when the assigned SOCKS port remains stable.
+  let torInstalled = false
   let torRunning = false
-  if (torIp) {
-    sdk.getStatus(effects, { packageId: 'tor' }).onChange((status) => {
-      torRunning = status?.desired.main === 'running'
-      return { cancel: false }
-    })
-  }
+  sdk.getStatus(effects, { packageId: 'tor' }).onChange((status) => {
+    torInstalled = status !== null
+    torRunning = status?.desired.main === 'running'
+    return { cancel: false }
+  })
 
-  const bitcoinArgs: string[] = torIp ? [`-onion=${torIp}:9050`] : []
+  const bitcoinArgs: string[] = [`-onion=${torSocks}`]
 
   if (reindexBlockchain) {
     bitcoinArgs.push('-reindex')
@@ -93,7 +100,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
     await storeJson.merge(effects, { reindexChainstate: false })
   }
 
-  const bitcoindSub = await sdk.SubContainer.of(
+  const bitcoindSub = await sdk.SubContainer.eager(
     effects,
     { imageId: 'bitcoind' },
     bitcoinMounts,
@@ -129,7 +136,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
   const runI2pd = i2pEnabled && (!onlynetActive || onlynetList.includes('i2p'))
 
   const i2pdSub = runI2pd
-    ? await sdk.SubContainer.of(
+    ? await sdk.SubContainer.eager(
         effects,
         { imageId: 'i2pd' },
         sdk.Mounts.of().mountVolume({
@@ -169,10 +176,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
     .addDaemon('bitcoind', {
       subcontainer: bitcoindSub,
       exec: {
-        command: [
-          'bitcoind',
-          ...bitcoinArgs,
-        ],
+        command: ['bitcoind', ...bitcoinArgs],
         sigtermTimeout: 300_000,
       },
       ready: {
@@ -259,7 +263,10 @@ export const main = sdk.setupMain(async ({ effects }) => {
               fullySynced: true,
             })
             // Reduce dbcache and dbbatchsize after initial sync to free RAM
-            await bitcoinConfFile.merge(effects, { dbcache: undefined, dbbatchsize: undefined })
+            await bitcoinConfFile.merge(effects, {
+              dbcache: undefined,
+              dbbatchsize: undefined,
+            })
           }
 
           return null
@@ -350,7 +357,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
     ready: {
       display: 'Tor',
       fn: () => {
-        if (!torIp) {
+        if (!torInstalled) {
           return { result: 'disabled', message: i18n('Tor is not installed') }
         }
         if (!torRunning) {
@@ -383,10 +390,9 @@ export const main = sdk.setupMain(async ({ effects }) => {
         }
         return {
           result: 'success',
-          message:
-            externalip?.some((ip) => ip && !ip.includes('.onion'))
-              ? i18n('Inbound and outbound connections')
-              : i18n('Outbound only. Publish an IP address to enable inbound.'),
+          message: externalip?.some((ip) => ip && !ip.includes('.onion'))
+            ? i18n('Inbound and outbound connections')
+            : i18n('Outbound only. Publish an IP address to enable inbound.'),
         }
       },
     },
@@ -397,7 +403,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
   return withClearnet.addDaemon('proxy', async () => {
     if (!bitcoinConf.prune) return null
 
-    const subcontainer = await sdk.SubContainer.of(
+    const subcontainer = await sdk.SubContainer.eager(
       effects,
       { imageId: 'proxy' },
       bitcoinMounts,
@@ -412,12 +418,8 @@ export const main = sdk.setupMain(async ({ effects }) => {
         bind_address: '0.0.0.0',
         bind_port: rpcPort,
         cookie_file: rpcCookiePath,
-        ...(torIp
-          ? {
-              tor_proxy: `${torIp}:9050`,
-              tor_only: onlynetList.length === 1 && onlynetList[0] === 'onion',
-            }
-          : {}),
+        tor_proxy: torSocks,
+        tor_only: onlynetList.length === 1 && onlynetList[0] === 'onion',
         passthrough_rpcauth: `${rootDir}/bitcoin.conf`,
         passthrough_rpccookie: rpcCookiePath,
       }),
