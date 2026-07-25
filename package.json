@@ -6,7 +6,7 @@
     "check": "tsc --noEmit"
   },
   "dependencies": {
-    "@start9labs/start-sdk": "2.0.7",
+    "@start9labs/start-sdk": "2.0.9",
     "diskusage": "^1.2.0",
     "tor-startos": "github:Start9Labs/tor-startos#3c1bbfeec0c1e9220220303e14a34160703db0d1"
   },
@@ -24,5 +24,8 @@
   },
   "allowScripts": {
     "diskusage@1.2.0": true
+  },
+  "overrides": {
+    "@start9labs/start-sdk": "$@start9labs/start-sdk"
   }
 }
