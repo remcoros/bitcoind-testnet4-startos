@@ -1,18 +1,18 @@
 import { VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '31.1:0',
+  version: '31.1:1',
   releaseNotes: {
     en_US:
-      'Updated Bitcoin Core to 31.1. Fixes a privacy issue where PrivateBroadcast could connect over clearnet instead of the configured privacy network, plus validation, wallet, networking, and performance issues. [Full release notes](https://bitcoincore.org/en/releases/31.1/).',
+      'Updates Start SDK to 2.0.9, deduplicates SDK copies in package dependencies, and resolves connected service addresses more reliably.',
     es_ES:
-      'Bitcoin Core se actualizó a la versión 31.1. Corrige un problema de privacidad por el que PrivateBroadcast podía conectarse por clearnet en lugar de la red de privacidad configurada, además de problemas de validación, cartera, red y rendimiento. [Notas completas de la versión](https://bitcoincore.org/en/releases/31.1/).',
+      'Actualiza Start SDK a 2.0.9, elimina copias duplicadas del SDK en las dependencias del paquete y resuelve de forma más fiable las direcciones de los servicios conectados.',
     de_DE:
-      'Bitcoin Core wurde auf Version 31.1 aktualisiert. Behebt ein Datenschutzproblem, durch das PrivateBroadcast Verbindungen über das Clearnet statt über das konfigurierte Datenschutznetzwerk herstellen konnte, sowie Probleme bei Validierung, Wallet, Netzwerk und Leistung. [Vollständige Versionshinweise](https://bitcoincore.org/en/releases/31.1/).',
+      'Aktualisiert das Start SDK auf 2.0.9, entfernt doppelte SDK-Kopien in den Paketabhängigkeiten und ermittelt die Adressen verbundener Dienste zuverlässiger.',
     pl_PL:
-      'Zaktualizowano Bitcoin Core do wersji 31.1. Naprawiono problem z prywatnością, przez który PrivateBroadcast mógł łączyć się przez clearnet zamiast skonfigurowanej sieci prywatności, a także problemy z walidacją, portfelem, siecią i wydajnością. [Pełne informacje o wydaniu](https://bitcoincore.org/en/releases/31.1/).',
+      'Aktualizuje Start SDK do wersji 2.0.9, usuwa zduplikowane kopie SDK z zależności pakietu i pewniej ustala adresy połączonych usług.',
     fr_FR:
-      'Bitcoin Core a été mis à jour vers la version 31.1. Corrige un problème de confidentialité où PrivateBroadcast pouvait se connecter via le clearnet au lieu du réseau de confidentialité configuré, ainsi que des problèmes de validation, de portefeuille, de réseau et de performances. [Notes de version complètes](https://bitcoincore.org/en/releases/31.1/).',
+      'Met à jour Start SDK vers la version 2.0.9, déduplique les copies du SDK dans les dépendances du paquet et détermine plus fiablement les adresses des services connectés.',
   },
   migrations: {
     up: async () => {},

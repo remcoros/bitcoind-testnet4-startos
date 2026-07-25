@@ -10,7 +10,6 @@ import { sdk } from './sdk'
 import {
   bitcoinCliArgs,
   bitcoinMounts,
-  bridgeAddress,
   GetBlockchainInfo,
   i2pControlPort,
   rootDir,
@@ -73,12 +72,14 @@ export const main = sdk.setupMain(async ({ effects }) => {
 
   const { reindexBlockchain, reindexChainstate } = store
 
-  const torSocks = await bridgeAddress(effects, {
-    packageId: 'tor',
-    hostId: socksHostId,
-    internalPort: socksPort,
-    fallbackPort: socksPort,
-  }).const()
+  const torSocks = await sdk.host
+    .getBridgeAddress(effects, {
+      packageId: 'tor',
+      hostId: socksHostId,
+      internalPort: socksPort,
+      fallbackPort: socksPort,
+    })
+    .const()
 
   // Track Tor independently of the bridge address so lifecycle changes do not
   // churn bitcoind when the assigned SOCKS port remains stable.
