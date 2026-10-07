@@ -10,7 +10,7 @@ const iniBoolean = z.union([
   z.boolean(),
 ])
 
-export const shape = z.object({
+export const shape = z.looseObject({
   log: z.literal('stdout').catch('stdout'),
   loglevel: z
     .enum(['none', 'critical', 'error', 'warn', 'info', 'debug'])
@@ -23,19 +23,19 @@ export const shape = z.object({
   notransit: iniBoolean.catch(false),
   floodfill: iniBoolean.catch(false),
   ntcp2: z
-    .object({
+    .looseObject({
       enabled: iniBoolean.catch(true),
       published: iniBoolean.catch(true),
     })
     .catch({ enabled: true, published: true }),
   ssu2: z
-    .object({
+    .looseObject({
       enabled: iniBoolean.catch(true),
       published: iniBoolean.catch(true),
     })
     .catch({ enabled: true, published: true }),
   http: z
-    .object({
+    .looseObject({
       enabled: iniBoolean.catch(false),
       address: z.string().catch('0.0.0.0'),
       port: iniNumber.catch(i2pUiPort),
@@ -48,22 +48,22 @@ export const shape = z.object({
       strictheaders: false,
     }),
   httpproxy: z
-    .object({
+    .looseObject({
       enabled: iniBoolean.catch(false),
     })
     .catch({ enabled: false }),
   socksproxy: z
-    .object({
+    .looseObject({
       enabled: iniBoolean.catch(false),
     })
     .catch({ enabled: false }),
   sam: z
-    .object({
+    .looseObject({
       enabled: iniBoolean.catch(true),
     })
     .catch({ enabled: true }),
   i2pcontrol: z
-    .object({
+    .looseObject({
       enabled: iniBoolean.catch(true),
       address: z.literal('127.0.0.1').catch('127.0.0.1'),
       port: iniNumber.catch(7650),
@@ -76,17 +76,17 @@ export const shape = z.object({
       password: 'itoopie',
     }),
   upnp: z
-    .object({
+    .looseObject({
       enabled: iniBoolean.catch(false),
     })
     .catch({ enabled: false }),
   reseed: z
-    .object({
+    .looseObject({
       verify: iniBoolean.catch(true),
     })
     .catch({ verify: true }),
   limits: z
-    .object({
+    .looseObject({
       transittunnels: iniNumber.catch(10000),
     })
     .catch({ transittunnels: 10000 }),
