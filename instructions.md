@@ -27,3 +27,18 @@ Open the **RPC Interface** to find the connection address. Use **Generate RPC Us
 ## Tor and I2P
 
 Optional Tor and I2P networking can be managed under **Peer Settings**.
+
+## Checking readiness
+
+**Blockchain Sync** tracks the chain, while **Index Sync** tracks indexes used by connected services. A synced chain can still have an index catching up. **Peers** shows the current connection counts. If another service needs an index, wait for that index to finish before using it.
+
+## Recovery and backups
+
+The delete actions are available while Bitcoin is stopped. They remove only the selected testnet4 peer list or index. Removing an index makes the corresponding queries unavailable until rebuilding finishes. Keep these actions for corruption recovery.
+
+Backups preserve wallets and settings but omit blockchain and index data. After restoring, allow time to download and rebuild that data before dependent services become ready.
+
+## Documentation
+
+- [Bitcoin Core documentation](https://bitcoincore.org/en/doc/)
+- [Bitcoin Core RPC reference](https://bitcoincore.org/en/doc/31.0.0/)

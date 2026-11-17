@@ -1,14 +1,17 @@
 {
   "name": "bitcoin-core-testnet-startos",
-  "dependencies": {
-    "@start9labs/start-sdk": "3.0.6",
-    "diskusage": "^1.2.0",
-    "tor-startos": "github:Start9Labs/tor-startos#b5c5ba7ec6cfeebf76ac76db69f5e7e059d04ef5"
+  "scripts": {
+    "test": "node --experimental-strip-types --test test/*.test.ts"
   },
-  "allowScripts": {
-    "diskusage@1.2.0": true
+  "dependencies": {
+    "@start9labs/start-sdk": "4.1.0",
+    "diskusage": "^1.2.0",
+    "tor-startos": "github:Start9Labs/tor-startos#next"
   },
   "overrides": {
     "@start9labs/start-sdk": "$@start9labs/start-sdk"
+  },
+  "allowScripts": {
+    "diskusage@1.2.0": true
   }
 }

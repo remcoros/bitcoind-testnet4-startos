@@ -4,6 +4,7 @@ import { mempoolConfig } from './config/mempool'
 import { otherConfig } from './config/other'
 import { peerConfig } from './config/peers'
 import { rpcConfig } from './config/rpc'
+import { deleteBlockFilterIndex } from './deleteBlockFilterIndex'
 import { deleteCoinstatsIndex } from './deleteCoinstatsIndex'
 import { deletePeers } from './deletePeers'
 import { deleteRpcAuth } from './deleteRpcAuth'
@@ -17,14 +18,15 @@ export const actions = sdk.Actions.of()
   .addAction(mempoolConfig)
   .addAction(peerConfig)
   .addAction(rpcConfig)
-  .addAction(deleteCoinstatsIndex)
-  .addAction(deletePeers)
   .addAction(deleteRpcAuth)
-  .addAction(deleteTxIndex)
   .addAction(generateRpcUser)
   .addAction(generateRpcUserDependent)
   .addAction(otherConfig)
-  .addAction(reindexBlockchain)
-  .addAction(reindexChainstate)
   .addAction(runtimeInfo)
   .addAction(autoconfig)
+  .addAction(deleteBlockFilterIndex)
+  .addAction(deleteCoinstatsIndex)
+  .addAction(deletePeers)
+  .addAction(deleteTxIndex)
+  .addAction(reindexBlockchain)
+  .addAction(reindexChainstate)

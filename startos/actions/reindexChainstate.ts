@@ -31,7 +31,7 @@ export const reindexChainstate = sdk.Action.withoutInput(
     })
 
     const status = await sdk
-      .getStatus(effects, { packageId: 'bitcoind' })
+      .getStatus(effects, { packageId: 'bitcoind-testnet' })
       .once()
 
     if (status?.desired.main === 'running') {
