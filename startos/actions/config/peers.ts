@@ -25,6 +25,7 @@ export const peerConfig = sdk.Action.withInput(
     .filter({
       onlynet: true,
       v2transport: true,
+      privatebroadcast: true,
       i2psam: true,
       connectpeer: true,
       maxconnections: true,
@@ -32,7 +33,9 @@ export const peerConfig = sdk.Action.withInput(
     .add({
       i2psam: Value.union({
         name: i18n('I2P SAM Proxy'),
-        description: i18n('Select how to connect to the I2P network.'),
+        description: i18n(
+          '- Enabled: Bitcoin also reaches peers over I2P, through the I2P router this service runs.\n- Disabled: no I2P connections, and i2p is dropped from Onlynet.',
+        ),
         default: 'enabled',
         variants: Variants.of({
           disabled: {
@@ -45,7 +48,7 @@ export const peerConfig = sdk.Action.withInput(
               i2pacceptincoming: Value.toggle({
                 name: i18n('Accept Incoming I2P Connections'),
                 description: i18n(
-                  'Accept inbound I2P connections (effective only when I2P is enabled).',
+                  'Let other I2P nodes connect to yours, which helps the network. Off, your node only makes outbound I2P connections.',
                 ),
                 default: true,
               }),
@@ -80,6 +83,56 @@ export const peerConfig = sdk.Action.withInput(
   // the execution function
   async ({ effects, input }) => {
     const { i2psam, ...confInput } = input
+
+    // Dropping i2p is only safe while another network survives it, so the one
+    // combination the file model cannot reconcile is refused here instead.
+    if (
+      i2psam.selection === 'disabled' &&
+      confInput.onlynet.length > 0 &&
+      confInput.onlynet.every((n) => n === 'i2p')
+    ) {
+      return {
+        version: '1',
+        title: i18n('Invalid Peer Settings'),
+        message: i18n(
+          'Onlynet is restricted to i2p, so disabling the I2P SAM Proxy would leave the node with no way to connect at all. Add another network to Onlynet first, or leave the proxy enabled.',
+        ),
+        result: null,
+      }
+    }
+
+    const { privatebroadcast, connectpeer } = confInput
+
+    // Onlynet as the file model will write it: i2p is dropped when the SAM
+    // proxy is off, and losing it is what can leave private broadcast with no
+    // transport at all.
+    const onlynet =
+      i2psam.selection === 'enabled'
+        ? confInput.onlynet
+        : confInput.onlynet.filter((n) => n !== 'i2p')
+
+    const conflict = !privatebroadcast
+      ? null
+      : connectpeer.selection === 'connect'
+        ? i18n(
+            'Bitcoin refuses to start with both Private Broadcast and Connect Peer set to Connect. Private broadcast opens its own connections to randomly chosen Tor or I2P peers, which Connect forbids. Choose Add Node instead, or turn off Private Broadcast.',
+          )
+        : onlynet.length &&
+            !onlynet.includes('onion') &&
+            !onlynet.includes('i2p')
+          ? i18n(
+              'Bitcoin refuses to start with Private Broadcast enabled while Onlynet excludes both Tor and I2P. Add onion to Onlynet, add i2p with the I2P SAM Proxy enabled, or turn off Private Broadcast.',
+            )
+          : null
+
+    if (conflict) {
+      return {
+        version: '1',
+        title: i18n('Invalid Peer Settings'),
+        message: conflict,
+        result: null,
+      }
+    }
 
     await bitcoinConfFile.merge(effects, {
       raw: {

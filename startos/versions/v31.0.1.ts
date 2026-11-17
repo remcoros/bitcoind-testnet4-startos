@@ -20,7 +20,7 @@ export const v_31_0_1 = VersionInfo.of({
     down: async ({ effects }) => {
       // v30 introduced indexes/coinstatsindex/ at a new path; <=29 doesn't read it.
       // Core preserved indexes/coinstats/ on upgrade for exactly this rollback.
-      await rm('/media/startos/volumes/main/indexes/coinstatsindex', {
+      await rm('/media/startos/volumes/main/testnet4/indexes/coinstatsindex', {
         recursive: true,
         force: true,
       }).catch(console.error)

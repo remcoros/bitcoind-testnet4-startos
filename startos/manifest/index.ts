@@ -6,7 +6,8 @@ export const manifest = setupManifest({
   title: 'Bitcoin Core (testnet4)',
   license: 'MIT',
   donationUrl: null,
-  packageRepo: 'https://github.com/remcoros/bitcoind-testnet4-startos/',
+  packageRepo:
+    'https://github.com/remcoros/bitcoind-testnet4-startos/tree/31.x-testnet4',
   upstreamRepo: 'https://github.com/bitcoin/bitcoin',
   marketingUrl: 'https://bitcoincore.org/',
   description: { short, long },
@@ -16,7 +17,7 @@ export const manifest = setupManifest({
       source: {
         dockerBuild: {
           buildArgs: {
-            VERSION: '31.1',
+            VERSION: '31.2',
           },
         },
       },
@@ -24,7 +25,7 @@ export const manifest = setupManifest({
     },
     proxy: {
       source: {
-        dockerTag: 'ghcr.io/start9labs/btc-rpc-proxy',
+        dockerTag: 'ghcr.io/start9labs/btc-rpc-proxy:v0.8.2',
       },
       arch: ['x86_64', 'aarch64', 'riscv64'],
     },

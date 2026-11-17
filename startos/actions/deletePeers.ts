@@ -1,6 +1,6 @@
 import { sdk } from '../sdk'
 import * as fs from 'fs/promises'
-import { rootDir, bitcoinMounts } from '../utils'
+import { networkDir, bitcoinMounts } from '../utils'
 import { i18n } from '../i18n'
 
 export const deletePeers = sdk.Action.withoutInput(
@@ -13,7 +13,9 @@ export const deletePeers = sdk.Action.withoutInput(
     description: i18n(
       'Deletes the Peer List (peers.dat) in case it gets corrupted.',
     ),
-    warning: null,
+    warning: i18n(
+      'Bitcoin forgets the peers it has learned and finds new ones when it next starts, so connecting may take longer.',
+    ),
     allowedStatuses: 'only-stopped',
     group: i18n('Delete Corrupted Files'),
     visibility: 'enabled',
@@ -27,7 +29,7 @@ export const deletePeers = sdk.Action.withoutInput(
       bitcoinMounts,
       'delete-peers',
       async (subc) => {
-        await fs.rm(`${subc.rootfs}/${rootDir}/peers.dat`, { force: true })
+        await fs.rm(`${subc.rootfs}${networkDir}/peers.dat`, { force: true })
       },
     )
 

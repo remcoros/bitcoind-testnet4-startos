@@ -1,6 +1,5 @@
 import { sdk } from '../sdk'
-import * as fs from 'fs/promises'
-import { rootDir, bitcoinMounts } from '../utils'
+import { deleteIndex } from '../utils'
 import { i18n } from '../i18n'
 
 export const deleteCoinstatsIndex = sdk.Action.withoutInput(
@@ -14,7 +13,7 @@ export const deleteCoinstatsIndex = sdk.Action.withoutInput(
       'Deletes the Coinstats Index (coinstatsindex) in case it gets corrupted.',
     ),
     warning: i18n(
-      "The Coinstats Index will be rebuilt once Bitcoin Core is started again, unless 'Transaction Index' is disabled in the config settings. Please don't do this unless you fully understand what you are doing.",
+      "The Coinstats Index will be rebuilt once Bitcoin Core is started again, unless 'Coinstats Index' is disabled in the config settings. Please don't do this unless you fully understand what you are doing.",
     ),
     allowedStatuses: 'only-stopped',
     group: i18n('Delete Corrupted Files'),
@@ -23,17 +22,7 @@ export const deleteCoinstatsIndex = sdk.Action.withoutInput(
 
   // execution function
   async ({ effects }) => {
-    await sdk.SubContainer.withTemp(
-      effects,
-      { imageId: 'bitcoind' },
-      bitcoinMounts,
-      'delete-coinstats',
-      async (subc) => {
-        await fs.rmdir(`${subc.rootfs}/${rootDir}/indexes/coinstatsindex/`, {
-          recursive: true,
-        })
-      },
-    )
+    await deleteIndex(effects, 'coinstatsindex')
 
     return {
       version: '1',
