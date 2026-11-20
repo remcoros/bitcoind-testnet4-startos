@@ -27,9 +27,11 @@ Additional images supply the RPC proxy, Python for RPC credential generation, an
 
 ## Volume and Data Layout
 
-The `main` volume mounts at `/root/.bitcoin`. It contains `bitcoin.conf` and package state in `store.json`. Network data, indexes, wallets, peer state, and the RPC cookie live below `testnet4/`. The `i2pd` volume mounts at `/home/i2pd` and retains the router identity and configuration.
+The `main` volume mounts at `/root/.bitcoin`. It contains `bitcoin.conf` and package state in `store.json`. Network data, indexes, wallets, peer state, and the RPC cookie live below `testnet4/`. The `i2pd` volume mounts at `/home/i2pd` and retains the router identity and configuration. The `public` volume is not mounted by Bitcoin; it holds copies of the RPC cookie and the `prune` setting for dependents, and is not backed up.
 
 Keep the volume root and the network directory distinct when diagnosing missing data: the cookie is `/root/.bitcoin/testnet4/.cookie`, and the transaction index is `/root/.bitcoin/testnet4/indexes/txindex`.
+
+**Dependents mount the `public` volume (`rpcVolumeId`), never `main`**, which holds the wallets. The `publish-rpc` oneshot writes `.cookie` (`rpcCookieName`, mode 0600) and `prune` (`rpcPruneName`, Bitcoin's `prune` setting, `0` when unpruned) at the volume root each time `bitcoind` becomes ready, each through a temp file and a rename; the published cookie is removed at the start of every run, so its absence means Bitcoin is down. Mount the volume, never a file in it: a file mount keeps the copy of the start it was made on.
 
 ## File Models
 
@@ -61,7 +63,7 @@ The exported RPC proxy forwards generated `rpcauth` credentials and follows cook
 
 Initialization seeds defaults, registers interfaces, and resolves dependencies. New installations use a RAM-scaled database cache and batch size; those temporary sync settings are removed after initial synchronization. Storage below 20 GB selects pruning by default. Embedded I2P is enabled by default and can be disabled in Peer Settings.
 
-Bitcoin starts with the testnet4 configuration and RPC cookie. The proxy starts after Bitcoin's RPC listener becomes available. Initialization converts older INI-encoded configuration on the version edge without clearing blockchain data or credentials.
+Bitcoin starts with the testnet4 configuration and RPC cookie. The proxy starts after Bitcoin's RPC listener becomes available; at the same point `publish-rpc` copies the cookie and the `prune` setting to the `public` volume. Initialization converts older INI-encoded configuration on the version edge without clearing blockchain data or credentials.
 
 ## Actions
 
@@ -83,7 +85,7 @@ I2P probes the embedded router's control API. Tor and Clearnet checks describe c
 
 ## Backups and Restore
 
-Backups retain configuration, wallet files, package state, and I2P identity. They exclude the blockchain, chainstate, indexes, cookies, journals, and disposable I2P network data. Exclusions cover the actual `testnet4/` data paths as well as legacy root blockchain paths; wallets inside `testnet4/` remain included.
+Backups retain configuration, wallet files, package state, and I2P identity. They exclude the blockchain, chainstate, indexes, cookies, and disposable I2P network data; the `public` volume is not backed up. Exclusions cover the actual `testnet4/` data paths as well as legacy root blockchain paths, each anchored at the volume root so that no wallet is excluded for sharing a name with one; wallets inside `testnet4/`, and their journals, remain included.
 
 A restored node must download and rebuild the excluded data. Restore replaces the saved wallet state, so wallet activity after the backup is not represented by that backup.
 
@@ -103,6 +105,7 @@ subcontainers: [bitcoind-sub, proxy-sub, i2pd-sub]
 volumes:
   main: /root/.bitcoin
   i2pd: /home/i2pd
+  public: null # not mounted by bitcoind; dependents mount it read-only (rpcVolumeId)
 file_models: [bitcoin.conf, store.json, i2pd.conf]
 startos_managed_env_vars: []
 dependencies: [tor]

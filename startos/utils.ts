@@ -62,6 +62,12 @@ export const rpccookiefile = 'testnet4/.cookie'
 export const rpccookiefileSection = '.cookie'
 export const networkDir = `${rootDir}/testnet4`
 
+/** The volume dependents mount read-only for RPC, holding copies bitcoind never touches — mount the volume, never a file in it, which each start replaces. */
+export const rpcVolumeId = 'public'
+export const rpcCookieName = '.cookie'
+/** bitcoind's `prune` setting, `0` when unpruned. */
+export const rpcPruneName = 'prune'
+
 export const i2pSamPort = 7656
 export const i2pUiPort = 7070
 export const i2pControlPort = 7650
