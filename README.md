@@ -47,15 +47,13 @@ Tor is optional. It becomes required when onion connectivity is selected or an o
 
 StartOS controls where exported interfaces are reachable. The package keeps its testnet ports separate from mainnet:
 
-| Interface | Container port | Preferred external port | Behavior |
-| --- | --- | --- | --- |
-| RPC (`rpc`) | 48332 | 48332 | JSON-RPC through the proxy on archival and pruned nodes |
-| Peer (`peer`) | 58333 | 48333 | Public P2P listener, IPv4 and IPv6 |
-| ZMQ block (`zmq-block`) | 38332 | 38332 | Hash and raw block notifications, when enabled |
-| ZMQ transaction (`zmq-tx`) | 38333 | 38333 | Transaction and sequence notifications, when enabled |
-| I2P console (`i2p-console`) | 7070 | Assigned by StartOS | Optional router console |
+| Interface                   | Container port | Preferred external port | Behavior                                                |
+| --------------------------- | -------------- | ----------------------- | ------------------------------------------------------- |
+| RPC (`rpc`)                 | 48332          | 48332                   | JSON-RPC through the proxy on archival and pruned nodes |
+| Peer (`peer`)               | 58333          | 48333                   | Public P2P listener, IPv4 and IPv6                      |
+| I2P console (`i2p-console`) | 7070           | Assigned by StartOS     | Optional router console                                 |
 
-Private bindings without exported interfaces provide direct RPC/REST on host `rpc-local`, port 58432, and whitelisted P2P on `peer-local`, port 58334. Dependent services should resolve these through StartOS rather than inventing hostnames or assuming host ports.
+Private bindings without exported interfaces provide direct RPC/REST on host `rpc-local`, port 58432, whitelisted P2P on `peer-local`, port 58334, and, when enabled, ZMQ on host `zmq`: hash and raw block notifications on 38332, transaction and sequence notifications on 38333. ZMQ has no authentication and carries the node's own transactions as it broadcasts them, so it never gets an exported interface. Dependent services should resolve these through StartOS rather than inventing hostnames or assuming host ports.
 
 The exported RPC proxy forwards generated `rpcauth` credentials and follows cookie rotation. On pruned nodes it can fetch missing blocks from peers; archival nodes use ordinary forwarding. The public RPC interface does not expose Bitcoin's unauthenticated REST API. ZMQ listens on IPv6 with dual-stack support.
 
@@ -112,11 +110,28 @@ dependencies: [tor]
 interfaces:
   rpc: { type: api, port: 48332 }
   peer: { type: p2p, port: 58333 }
-  zmq-block: { type: api, port: 38332 }
-  zmq-tx: { type: api, port: 38333 }
+  # zmq: no interface; 38332 and 38333 bridge-only, bound only when ZMQ is enabled
   i2p-console: { type: ui, port: 7070 }
-actions: [mempool-config, peers-config, rpc-config, other-config, generate-rpcuser, delete-rpcauth, runtime-info, autoconfig, generate-rpc-dependent, reindex-blockchain, reindex-chainstate, delete-peers, delete-txindex, delete-coinstats-index, delete-block-filter-index]
+actions:
+  [
+    mempool-config,
+    peers-config,
+    rpc-config,
+    other-config,
+    generate-rpcuser,
+    delete-rpcauth,
+    runtime-info,
+    autoconfig,
+    generate-rpc-dependent,
+    reindex-blockchain,
+    reindex-chainstate,
+    delete-peers,
+    delete-txindex,
+    delete-coinstats-index,
+    delete-block-filter-index,
+  ]
 tasks: [dependent autoconfiguration]
-health_checks: [bitcoind, proxy, sync-progress, index-sync, peers, i2pd, tor, clearnet]
+health_checks:
+  [bitcoind, proxy, sync-progress, index-sync, peers, i2pd, tor, clearnet]
 backup_volumes: [main, i2pd]
 ```
