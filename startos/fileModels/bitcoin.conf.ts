@@ -1,5 +1,5 @@
 import { FileHelper, T, utils, z } from '@start9labs/start-sdk'
-import * as diskusage from 'diskusage'
+import { statfs } from 'fs/promises'
 import { totalmem } from 'os'
 import { i18n } from '../i18n'
 import { sdk } from '../sdk'
@@ -46,7 +46,8 @@ const iniBoolean = z
   .catch(undefined)
 
 export const minPrune = 550
-export const minConnections = 40
+// Peer-local dependents must retain eviction capacity under Core's 50% relay quota.
+export const minConnections = 53
 
 const validNets = ['ipv4', 'ipv6', 'onion', 'i2p'] as const
 const onlyNetOption = z.enum(validNets)
@@ -182,7 +183,10 @@ function stringifyPrimitives(a: unknown): any {
 
 const { InputSpec, Value, Variants, List } = sdk
 
-export const diskUsage = utils.once(() => diskusage.check('/'))
+export const diskUsage = utils.once(async () => {
+  const { blocks, bsize } = await statfs('/')
+  return { total: blocks * bsize }
+})
 export const archivalMin = 20_000_000_000
 
 export const defaultDbcache = () =>
@@ -574,7 +578,7 @@ export const fullConfigSpec = sdk.InputSpec.of({
     required: false,
     min: minConnections,
     integer: true,
-    footnote: `${i18n('Default')}: 125`,
+    footnote: `${i18n('Default')}: 200`,
   }),
   blocksonly: Value.triState({
     name: i18n('Blocks Only'),

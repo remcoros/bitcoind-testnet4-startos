@@ -37,11 +37,15 @@ Keep the volume root and the network directory distinct when diagnosing missing 
 
 Configuration actions read and merge `bitcoin.conf`, preserving unknown keys and other sections. The package enforces `chain=testnet4` and writes the active network configuration inside `[testnet4]`. A custom parser and writer preserve quotes, backslashes, equals signs, and semicolons as Bitcoin reads them. Text containing a line break or `#` cannot be written as a single Bitcoin configuration value.
 
+Bitcoin Core defaults to 200 peer connections. The package raises explicit values below 53 to leave enough room for a whitelisted `peer-local` connection under Core's default inbound transaction relay quota.
+
 `store.json` retains reindex requests and sync-notification state. `i2pd.conf` is a typed model on the I2P volume. Existing I2P bandwidth and transit settings are retained through upgrades; new configurations use the current router defaults.
 
 ## Dependencies
 
 Tor is optional. It becomes required when onion connectivity is selected or an onion peer address is configured. Its SOCKS endpoint is resolved through the StartOS bridge. Losing Tor does not change an explicit `onlynet` restriction into unrestricted networking.
+
+StartOS Tor manages inbound onion addresses for the **Peer** interface. The package disables Bitcoin Core's automatic onion service with `-listenonion=0`. Core still advertises the configured onion address and uses Tor SOCKS for outbound onion peers.
 
 ## Network Access and Interfaces
 

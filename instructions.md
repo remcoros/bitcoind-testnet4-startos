@@ -28,6 +28,8 @@ Open the **RPC Interface** to find the connection address. Use **Generate RPC Us
 
 Optional Tor and I2P networking can be managed under **Peer Settings**.
 
+To accept incoming Bitcoin connections over Tor, add a Tor address to the **Peer** interface. The StartOS Tor service manages that address.
+
 ## Checking readiness
 
 **Blockchain Sync** tracks the chain, while **Index Sync** tracks indexes used by connected services. A synced chain can still have an index catching up. **Peers** shows the current connection counts. If another service needs an index, wait for that index to finish before using it.
@@ -41,4 +43,4 @@ Backups preserve wallets and settings but omit blockchain and index data. After 
 ## Documentation
 
 - [Bitcoin Core documentation](https://bitcoincore.org/en/doc/)
-- [Bitcoin Core RPC reference](https://bitcoincore.org/en/doc/31.0.0/)
+- [Bitcoin Core RPC reference](https://bitcoincore.org/en/doc/32.0.0/)

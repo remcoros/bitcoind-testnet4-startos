@@ -5,13 +5,9 @@
   },
   "dependencies": {
     "@start9labs/start-sdk": "4.1.0",
-    "diskusage": "^1.2.0",
     "tor-startos": "github:Start9Labs/tor-startos#next"
   },
   "overrides": {
     "@start9labs/start-sdk": "$@start9labs/start-sdk"
-  },
-  "allowScripts": {
-    "diskusage@1.2.0": true
   }
 }

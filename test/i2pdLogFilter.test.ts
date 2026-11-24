@@ -3,9 +3,8 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { i2pdLogFilter, isI2pdChurn } from '../startos/i2pdLogFilter.ts'
 
-// At least one real line per drop family, in CHURN_FAMILIES order, taken
-// verbatim from two i2pd 2.58.0 field exports (identifiers included — they
-// are public router hashes).
+// At least one line per drop family, in CHURN_FAMILIES order. Most come
+// from i2pd 2.58.0 field exports and include public router hashes.
 const DROPPED = [
   '12:44:05@235/warn - Transports: Session to peer ScbqgA4rDJDYsALzrkV~e7ztFYWD-v6Nyyknjoh15WE= has not been created in 15 seconds',
   '10:44:07@224/warn - NTCP2: SessionCreated read error: End of file',
@@ -26,6 +25,11 @@ const DROPPED = [
   '12:10:00@939/warn - SSU2: TokenRequest AEAD verification failed',
   '12:11:00@939/warn - SSU2: SessionRequest message too short 47',
   '12:11:10@939/warn - SSU2: SessionCreated message too short 47',
+  // Message variants from i2pd 2.61.0 SSU2Session.cpp.
+  '12:11:20@939/warn - SSU2: SessionRequest message is too short 47',
+  '12:11:30@939/warn - SSU2: SessionCreated message is too short 47',
+  '12:11:40@939/warn - SSU2: SessionRequest version \x03 message too short 47',
+  '12:11:50@939/warn - SSU2: SessionRequest version \x04 message too short 47',
   '12:12:00@939/warn - SSU2: SessionCreated AEAD verification failed',
   '10:44:04@512/warn - Profiling: No profile yet for nZDCHvUwYCTSZLniXQu1ggDLm4ka3Ecy9bKfOMej-MQ=',
   '10:44:04@513/warn - NetDbReq: Destination ~SWAX1lDQOkz-Q0I0Bd0WS354RVC5aYTE0ZrK8e7Cs8= is requested already or cached',

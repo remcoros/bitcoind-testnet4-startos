@@ -19,7 +19,7 @@ import { StringDecoder } from 'node:string_decoder'
  * construction, not by enumeration. Lines that pass are prefixed `[i2pd] `
  * so the survivors are attributable in the shared service log.
  *
- * The families are transcribed verbatim from i2pd 2.58.0 field exports.
+ * The families come from i2pd 2.58.0 field exports and the 2.61.0 source.
  * A bump of the pinned i2pd image can reword them, which fails open: a
  * reworded line no longer matches and the flood returns — see UPDATING.md
  * for the re-validation step that belongs to an i2pd bump.
@@ -44,7 +44,9 @@ const CHURN_FAMILIES: RegExp[] = [
   /^SSU2: Unexpected PeerTest message SourceConnID=\d+ DestConnID=\d+$/,
   /^SSU2: RelayIntro unknown router to introduce$/,
   /^SSU2: TokenRequest AEAD verification failed$/,
-  /^SSU2: (SessionRequest|SessionCreated) message too short \d+$/,
+  /^SSU2: (SessionRequest|SessionCreated) message (is )?too short \d+$/,
+  // i2pd streams the uint8_t protocol version as a byte.
+  /^SSU2: SessionRequest version [\x03\x04] message too short \d+$/,
   /^SSU2: SessionCreated AEAD verification failed$/,
   // Peer-database maintenance.
   /^Profiling: No profile yet for \S+$/,
